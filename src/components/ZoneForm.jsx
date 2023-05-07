@@ -8,7 +8,7 @@ const ZoneForm = ({ onZoneAdded }) => {
 
 
     useEffect(() => {
-        axios.get("/api/villes").then((response) => {
+        axios.get('/api/villes').then((response) => {
             setCities(response.data);
         });
     }, []);

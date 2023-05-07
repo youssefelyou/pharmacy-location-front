@@ -8,7 +8,7 @@ const CityForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post("http://localhost:8080/api/villes", { name }).then(() => {
+        axios.post('/api/villes/save', { name }).then(() => {
             navigate("/");
         });
     };
