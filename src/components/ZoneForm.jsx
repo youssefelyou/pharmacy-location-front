@@ -15,7 +15,7 @@ const ZoneForm = ({ onZoneAdded }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post("/api/zones/save", {
+        axios.post('/api/zones/save', {
             name,
             city: {
                 id: cityId
