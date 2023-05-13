@@ -21,7 +21,6 @@ function App() {
             <Route path="/zoneByCity" element={<ZoneByCity />} />
           </Routes>
         </div>
-        <Footer />
       </Router>
   );
 }
