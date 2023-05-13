@@ -7,6 +7,7 @@ import ZoneForm from "./components/ZoneForm";
 import ZoneByCity from "./components/ZoneByCity";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import PharmacyForm from "./components/PharmacyForm";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/zone" element={<ZoneList/>} />
             <Route path="/create-zone" element={<ZoneForm />} />
             <Route path="/zoneByCity" element={<ZoneByCity />} />
+            <Route path="/pharmacie" element={<PharmacyForm />} />
           </Routes>
         </div>
       </Router>

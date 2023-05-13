@@ -8,11 +8,11 @@ const PharmacyForm = ({ }) => {
     const [longitude, setLongitude] = useState(0);
     const [photo, setPhoto] = useState('');
     const [zoneId, setZoneId] = useState("");
-    const [zones, setZones] = useState([]);
+    const [zone, setZone] = useState([]);
 
     useEffect(() => {
         axios.get('/api/zones').then((response) => {
-            setZones(response.data);
+            setZone(response.data);
         });
     }, []);
 
@@ -37,7 +37,7 @@ const PharmacyForm = ({ }) => {
         });
     };
     return (
-        <form onSubmit={handleSubmit} action="/api/pharmacies/save" method="post">
+        <form onSubmit={handleSubmit} >
             <div className="mb-3">
                 <label htmlFor="nom" className="form-label">Nom:</label>
                 <input type="text" className="form-control" id="nom" value={nom} onChange={(event) => setNom(event.target.value)} />
@@ -59,10 +59,10 @@ const PharmacyForm = ({ }) => {
                 <input type="text" className="form-control" id="photo" value={photo} onChange={(event) => setPhoto(event.target.value)} />
             </div>
             <div className="mb-3">
-                <select className="form-control" id="czoneId" value={zoneId}
+                <select className="form-control" id="zoneId" value={zoneId}
                         onChange={(event) => setZoneId(event.target.value)}>
-                    <option value="">Select a city</option>
-                    {zones && zones.map((zone) => (
+                    <option value="">Select zone</option>
+                    {zone && zone.map((zone) => (
                         <option key={zone.id} value={zone.id}>
                             {zone?.nom}
                         </option>
