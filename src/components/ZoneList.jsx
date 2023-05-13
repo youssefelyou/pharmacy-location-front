@@ -3,11 +3,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 
-const ZoneList = ({ cityId }) => {
+const ZoneList = ({ villeId }) => {
     const [zones, setZones] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedZone, setSelectedZone] = useState(null);
-    const [cities, setCities] = useState([]);
+    const [ville, setville] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -15,14 +15,14 @@ const ZoneList = ({ cityId }) => {
             setZones(result.data);
         };
         fetchData();
-    }, [cityId]);
+    }, [villeId]);
 
     useEffect(() => {
-        const fetchCities = async () => {
-            const result = await axios(`/api/villes`);
-            setCities(result.data);
+        const fetchville = async () => {
+            const result = await axios(`/api/villes/`);
+            setville(result.data);
         };
-        fetchCities();
+        fetchville();
     }, []);
 
     const handleDelete = (zoneId) => {
@@ -59,7 +59,7 @@ const ZoneList = ({ cityId }) => {
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>City</th>
+                    <th>ville</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -67,8 +67,8 @@ const ZoneList = ({ cityId }) => {
                 {zones.map((zone) => (
                     <tr key={zone.id}>
                         <td>{zone.id}</td>
-                        <td>{zone.name}</td>
-                        <td>{zone.city && zone.city.name}</td>
+                        <td>{zone.nom}</td>
+                        <td>{zone.ville && zone.ville.nom}</td>
                         <td>
                             <button className="btn btn-danger" onClick={() => handleDelete(zone.id)}>
                                 Delete
@@ -86,14 +86,14 @@ const ZoneList = ({ cityId }) => {
                 <ul>
                     <li>
                         <label>Nom de la zone:</label>
-                        <input type="text" value={selectedZone && selectedZone.name} />
+                        <input type="text" value={selectedZone && selectedZone.nom} />
                     </li>
                     <li>
                         <label>Ville:</label>
-                        <select value={selectedZone && selectedZone.city && selectedZone.city.id}>
-                            {cities.map((city) => (
-                                <option key={city.id} value={city.id}>
-                                    {city.name}
+                        <select value={selectedZone && selectedZone.ville && selectedZone.ville.id}>
+                            {ville.map((ville) => (
+                                <option key={ville.id} value={ville.id}>
+                                    {ville.nom}
                                 </option>
                             ))}
                         </select>
