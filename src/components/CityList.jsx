@@ -6,7 +6,7 @@ const CityList = () => {
     const [cities, setCities] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/villes').then((response) => {
+        axios.get('/api/villes/').then((response) => {
             setCities(response.data);
         });
     }, []);
@@ -22,10 +22,10 @@ const CityList = () => {
     const handleEdit = (id) => {
         const newName = window.prompt("Enter the new name for this city:");
         if (newName) {
-            axios.put(`/api/villes/${id}`, {name:newName }).then(() => {
+            axios.put(`/api/villes/${id}`, {nom:newName }).then(() => {
                 setCities(cities.map((city) => {
                     if (city.id === id) {
-                        return { ...city, name: newName };
+                        return { ...city, nom: newName };
                     }
                     return city;
                 }));
@@ -51,7 +51,7 @@ const CityList = () => {
                 {cities.map((city) => (
                     <tr key={city.id}>
                         <td>{city.id}</td>
-                        <td>{city.name}</td>
+                        <td>{city.nom}</td>
                         <td>
                             <button className="btn btn-danger" onClick={() => handleDelete(city.id)}>
                                 Delete

@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const CityForm = () => {
-    const [name, setName] = useState("");
+    const [nom, setName] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/api/villes/save', { name }).then(() => {
+        axios.post('/api/villes/save', { nom }).then(() => {
             navigate("/");
         });
     };
@@ -23,7 +23,7 @@ const CityForm = () => {
                         type="text"
                         className="form-control"
                         id="name"
-                        value={name}
+                        value={nom}
                         onChange={(event) => setName(event.target.value)}
                     />
                 </div>
