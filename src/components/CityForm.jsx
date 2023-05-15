@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import {Card, CardBody, CardHeader, CardTitle} from "reactstrap";
 
 const CityForm = () => {
     const [nom, setName] = useState("");
@@ -8,31 +9,44 @@ const CityForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/api/villes/save', { nom }).then(() => {
+        axios.post('/api/villes/save', {nom}).then(() => {
             navigate("/");
         });
     };
 
-    return (
-        <div>
-            <h2>Create City</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="name">Name:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        value={nom}
-                        onChange={(event) => setName(event.target.value)}
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">
-                    Create
-                </button>
-            </form>
-        </div>
-    );
+    return (<div className="container mt-3  p-5">
+        <Card className="shadow-lg">
+            <CardHeader className="d-flex bg-success   justify-content-between flex-row">
+                <CardTitle className="text-white">create zone</CardTitle>
+            </CardHeader>
+
+            <CardBody>
+                <form onSubmit={handleSubmit}>
+                    <div className="row">
+                        <div className="col-lg-6 col-md-6 col-sm-12">
+                            <div className="form-group">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="nom de ville"
+                                    id="name"
+                                    value={nom}
+                                    onChange={(event) => setName(event.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-lg-6 col-md-6 col-sm-12">
+                            <button type="submit" className="btn w-100  btn-outline-success">
+                                Create
+                            </button>
+                        </div>
+                    </div>
+
+
+                </form>
+            </CardBody>
+        </Card>
+    </div>);
 };
 
 export default CityForm;

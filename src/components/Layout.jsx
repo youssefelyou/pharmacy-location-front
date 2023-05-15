@@ -1,12 +1,19 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook ,faInstagram,faGithub} from '@fortawesome/free-brands-svg-icons';
+import {NavLink} from "react-router-dom";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faFacebook, faGithub, faInstagram} from '@fortawesome/free-brands-svg-icons';
 
 function Header() {
     return (
-        <header className="navbar navbar-expand-lg navbar-light bg-light">
+        <header className="navbar navbar-expand-lg navbar-dark bg-success">
             <nav className="container-fluid">
+                <a className="navbar-brand fw-bold" href="/">
+                    <img width="40" height="40" className="m-1"
+                         src="https://img.icons8.com/external-xnimrodx-lineal-gradient-xnimrodx/64/external-pharmacy-pharmacy-xnimrodx-lineal-gradient-xnimrodx-2.png"
+                         alt="external-pharmacy-pharmacy-xnimrodx-lineal-gradient-xnimrodx-2"/>
+                    pHARMACY
+                </a>
+
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/" activeClassName="active">
@@ -56,4 +63,6 @@ const Footer = () => {
     );
 };
 
-export { Header, Footer };
+export {
+    Header, Footer
+};

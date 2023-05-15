@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import axios from "axios";
 
 const CityList = () => {
@@ -22,10 +22,10 @@ const CityList = () => {
     const handleEdit = (id) => {
         const newName = window.prompt("Enter the new name for this city:");
         if (newName) {
-            axios.put(`/api/villes/${id}`, {nom:newName }).then(() => {
+            axios.put(`/api/villes/${id}`, {nom: newName}).then(() => {
                 setCities(cities.map((city) => {
                     if (city.id === id) {
-                        return { ...city, nom: newName };
+                        return {...city, nom: newName};
                     }
                     return city;
                 }));
@@ -33,40 +33,41 @@ const CityList = () => {
         }
     };
 
-    return (
-        <div>
-            <h2>City List</h2>
-            <Link to="/create-city" className="btn btn-primary">
-                Create City
-            </Link>
-            <table className="table">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {cities.map((city) => (
-                    <tr key={city.id}>
-                        <td>{city.id}</td>
-                        <td>{city.nom}</td>
-                        <td>
-                            <button className="btn btn-danger" onClick={() => handleDelete(city.id)}>
-                                Delete
-                            </button>
-                            <button className="btn btn-secondary ml-2" onClick={() => handleEdit(city.id)}>
-                                Edit
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+    return (<div className="container bg-body mt-3 shadow-lg p-5">
+        <div className="d-flex justify-content-between flex-row">
+            <h2>Cities</h2>
+            <Link to="/create-city">
+                <a className="btn text-center btn-sm btn-outline-success">new city</a>
 
+            </Link>
         </div>
-    );
+
+
+        <table className="table rounded p-3 table-light table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {cities.map((city) => (<tr key={city.id}>
+                <td>{city.id}</td>
+                <td>{city.nom}</td>
+                <td>
+                    <button className="btn btn-sm btn-outline-danger m-2" onClick={() => handleDelete(city.id)}>
+                        Delete
+                    </button>
+                    <button className="btn btn-sm btn-outline-warning " onClick={() => handleEdit(city.id)}>
+                        Edit
+                    </button>
+                </td>
+            </tr>))}
+            </tbody>
+        </table>
+
+    </div>);
 };
 
 export default CityList;
