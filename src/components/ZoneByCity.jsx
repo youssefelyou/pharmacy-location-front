@@ -1,44 +1,49 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 
-const ZoneByCity = () => {
+const ZoneByville = () => {
     const [zones, setZones] = useState([]);
     const [cities, setCities] = useState([]);
-    const [selectedCityId, setSelectedCityId] = useState("");
+    const [selectedvilleId, setSelectedvilleId] = useState("");
 
     useEffect(() => {
-        axios.get("/api/villes").then((response) => {
+        axios.get("/api/villes/").then((response) => {
             setCities(response.data);
         });
     }, []);
 
-    const handleCityChange = (event) => {
-        const cityId = event.target.value;
-        setSelectedCityId(cityId);
-        axios.get(`/api/zones/ville/${cityId}`).then((response) => {
+    const handlevilleChange = (event) => {
+        const villeId = event.target.value;
+        setSelectedvilleId(villeId);
+        axios.get(`/api/zones/ville/${villeId}`).then((response) => {
             setZones(response.data);
         });
     };
 
     return (
-        <div>
-            <h2>Zone par ville</h2>
-            <div className="form-group">
-                <label htmlFor="cityId">Select a city:</label>
-                <select
-                    className="form-control"
-                    id="cityId"
-                    value={selectedCityId}
-                    onChange={handleCityChange}
-                >
-                    <option value="">All cities</option>
-                    {cities.map((city) => (
-                        <option key={city.id} value={city.id}>
-                            {city.name}
-                        </option>
-                    ))}
-                </select>
+        <div className="container bg-body mt-3 shadow-lg p-5">
+
+            <div className="d-flex justify-content-between flex-row">
+                <h2>Zone par ville</h2>
+                <div className="form-group d-flex  flex-row ">
+                    <label className="w-100 m-2" htmlFor="villeId">Select a city: </label>
+                    <select
+                        className="form-select-sm"
+                        id="villeId"
+                        value={selectedvilleId}
+                        onChange={handlevilleChange}
+                    >
+                        <option value="">All cities</option>
+                        {cities.map((ville) => (
+                            <option key={ville.id} value={ville.id}>
+                                {ville?.nom}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
+
+
             <table className="table">
                 <thead>
                 <tr>
@@ -49,8 +54,8 @@ const ZoneByCity = () => {
                 <tbody>
                 {zones.map((zone) => (
                     <tr key={zone.id}>
-                        <td>{zone.name}</td>
-                        <td>{zone.city.name}</td>
+                        <td>{zone.nom}</td>
+                        <td>{zone.ville?.nom}</td>
                     </tr>
                 ))}
                 </tbody>
@@ -59,4 +64,4 @@ const ZoneByCity = () => {
     );
 };
 
-export default ZoneByCity;
+export default ZoneByville;
