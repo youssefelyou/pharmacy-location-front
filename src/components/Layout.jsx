@@ -35,6 +35,13 @@ function Header() {
                             Pharmacie
                         </NavLink>
                     </li>
+
+
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/pharmaciegarde" activeClassName="active">
+                            Pharmacie de Garde
+                        </NavLink>
+                    </li>
                 </ul>
             </nav>
         </header>

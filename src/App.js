@@ -9,6 +9,7 @@ import ZoneByCity from "./components/ZoneByCity";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PharmacyForm from "./components/PharmacyForm";
 import PharmacyList from "./components/PharmacyList";
+import GardePharmacie from "./components/GardePharmacie";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/zoneByCity" element={<ZoneByCity />} />
             <Route path="/pharmacie" element={<PharmacyList />} />
             <Route path="/pharmacie-create" element={<PharmacyForm />} />
+            <Route path="/pharmaciegarde" element={<GardePharmacie />} />
           </Routes>
         </div>
       </Router>

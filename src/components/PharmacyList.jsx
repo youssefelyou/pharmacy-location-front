@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Card, CardBody, CardHeader, CardTitle, Table} from 'reactstrap'
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const PharmacyList = ({zoneId}) => {
@@ -24,6 +24,14 @@ const PharmacyList = ({zoneId}) => {
         };
         fetchData();
     }, []);
+
+    const handleDelete = (pharmacieId) => {
+        if (window.confirm("Are you sure you want to delete this pharmacie?")) {
+            axios.delete(`/api/pharmacies/delete/${pharmacieId}`).then(() => {
+                setPharmacies(pharmacies.filter((pharmacie) => pharmacie.id !== pharmacieId));
+            });
+        }
+    };
 
     return (
         <div>
@@ -56,6 +64,7 @@ const PharmacyList = ({zoneId}) => {
                                         <th>Longitude</th>
                                         <th>Photo</th>
                                         <th>Zone</th>
+                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -66,8 +75,11 @@ const PharmacyList = ({zoneId}) => {
                                             <td>{pharmacie.addresse}</td>
                                             <td>{pharmacie.latitude}</td>
                                             <td>{pharmacie.longitude}</td>
-                                            <td>{pharmacie.photo}</td>
+                                            <td><img src={pharmacie.photo} alt={pharmacie.nom} width="100" height="100" /></td>
                                             <td>{pharmacie.zone && pharmacie.zone.nom}</td>
+                                            <td>
+                                                <FontAwesomeIcon icon={ faTrash} onClick={() => handleDelete(pharmacie.id)}/>
+                                            </td>
 
                                         </tr>
                                     ))}

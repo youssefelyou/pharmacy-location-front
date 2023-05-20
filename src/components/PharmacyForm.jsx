@@ -32,11 +32,22 @@ const PharmacyForm = ({}) => {
             setZoneId("");
         });
     };
+
+    const handlePhotoChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            setPhoto(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    };
+
+
     return (
         <div className="container mt-3  p-5">
             <Card className="shadow-lg">
                 <CardHeader className="d-flex bg-success   justify-content-between flex-row">
-                    <CardTitle className="text-white">create pharmacy</CardTitle>
+                    <CardTitle className="text-white">Add Pharmacy</CardTitle>
                 </CardHeader>
 
 
@@ -69,8 +80,8 @@ const PharmacyForm = ({}) => {
 
                             <div className="col-lg-6 col-md-6 col-sm-12 p-3">
                                 <label htmlFor="photo" className="form-label">Photo:</label>
-                                <input type="text" className="form-control" id="photo" value={photo}
-                                       onChange={(event) => setPhoto(event.target.value)}/>
+                                <input type="file" className="form-control" accept="image/*" id="photo"
+                                       onChange={handlePhotoChange}/>
                             </div>
 
 
