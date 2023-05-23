@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PharmacyForm from "./components/PharmacyForm";
 import PharmacyList from "./components/PharmacyList";
 import GardePharmacie from "./components/GardePharmacie";
+import GardePharmacieList from "./components/GardePharmacieList";
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
             <Route path="/zoneByCity" element={<ZoneByCity />} />
             <Route path="/pharmacie" element={<PharmacyList />} />
             <Route path="/pharmacie-create" element={<PharmacyForm />} />
-            <Route path="/pharmaciegarde" element={<GardePharmacie />} />
+            <Route path="/pharmaciegarde" element={<GardePharmacieList />} />
+            <Route path="/pharmaciegarde-create" element={<GardePharmacie />} />
           </Routes>
         </div>
       </Router>

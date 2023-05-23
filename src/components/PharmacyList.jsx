@@ -7,7 +7,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const PharmacyList = ({zoneId}) => {
     const [pharmacies, setPharmacies] = useState([]);
-    const [zone, setZone] = useState([]);
+
 
     useEffect(() => {
         const fetchpharmacie = async () => {
@@ -17,13 +17,7 @@ const PharmacyList = ({zoneId}) => {
         fetchpharmacie();
     }, [zoneId]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await axios(`/api/zones`);
-            setZone(result.data);
-        };
-        fetchData();
-    }, []);
+
 
     const handleDelete = (pharmacieId) => {
         if (window.confirm("Are you sure you want to delete this pharmacie?")) {

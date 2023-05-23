@@ -4,6 +4,7 @@ import {Card, CardBody, CardHeader, CardTitle} from "reactstrap";
 
 const GardePharmacie = ({}) => {
     const [dateDebut, setDateDebut] = useState('');
+    const [pk, setPk] = useState('');
     const [dateFin, setDateFin] = useState('');
     const [gardeId, setGardeId] = useState("");
     const [garde, setGarde] = useState([]);
@@ -24,7 +25,7 @@ const GardePharmacie = ({}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/api/pharmaciegarde/save', {
+        axios.post('/api/pharmaciegarde/save', {pk,
             dateDebut, dateFin, garde: {id: gardeId}, pharmacie: {id: pharmacieId}
         }).then((response) => {
             setDateDebut("");
@@ -75,7 +76,7 @@ const GardePharmacie = ({}) => {
                                 <select className="form-control" id="gardeId" value={pharmacieId}
                                         onChange={(event) => setPharmacieId(event.target.value)}>
                                     <option value="">Select Pharmacy</option>
-                                    {pharmacie && pharmacie.map((garde) => (<option key={pharmacie.id} value={pharmacie.id}>
+                                    {pharmacie && pharmacie.map((pharmacie) => (<option key={pharmacie.id} value={pharmacie.id}>
                                         {pharmacie?.nom}
                                     </option>))}
                                 </select>
