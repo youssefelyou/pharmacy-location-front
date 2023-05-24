@@ -7,14 +7,31 @@ import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 const GardePharmacieList = () => {
     const [gardepharmacie, setGardeharmacies] = useState([]);
-
+    const [pharmacies, setPharmacies] = useState([]);
+    const [gardes, setGardes] = useState([]);
 
     useEffect(() => {
         const fetchpharmacie = async () => {
+            const result = await axios(`/api/pharmacies/`);
+            setPharmacies(result.data);
+        };
+        fetchpharmacie();
+    }, );
+
+    useEffect(() => {
+        const fetchgarde = async () => {
+            const result = await axios(`/api/garde/`);
+            setGardes(result.data);
+        };
+        fetchgarde();
+    }, );
+
+    useEffect(() => {
+        const fetchpharmaciegarde = async () => {
             const result = await axios(`/api/pharmaciegarde/`);
             setGardeharmacies(result.data);
         };
-        fetchpharmacie();
+        fetchpharmaciegarde();
     }, );
 
 
@@ -52,12 +69,10 @@ const GardePharmacieList = () => {
                                     </thead>
                                     <tbody>
                                     {gardepharmacie.map((gardepharmacie) => {
-                                        const compositeKey = `${gardepharmacie.pk.pharmacie}-${gardepharmacie.pk.garde}`;
-
                                         return (
-                                            <tr key={compositeKey}>
-                                                <td>{gardepharmacie.pharmacie && gardepharmacie.pharmacie.nom}</td>
-                                                <td>{gardepharmacie.garde && gardepharmacie.garde.type}</td>
+                                            <tr key={gardepharmacie.pk.dateDebut + gardepharmacie.pk.pharmacie + gardepharmacie.pk.garde}>
+                                                <td>{pharmacies.find((pharmacie) => pharmacie.id === gardepharmacie.pk.pharmacie)?.nom}</td>
+                                                <td>{gardes.find((garde) => garde.id === gardepharmacie.pk.garde)?.type}</td>
                                                 <td>{new Date(gardepharmacie.pk.dateDebut).toLocaleDateString()}</td>
                                                 <td>{new Date(gardepharmacie.dateFin).toLocaleDateString()}</td>
                                                 <td></td>

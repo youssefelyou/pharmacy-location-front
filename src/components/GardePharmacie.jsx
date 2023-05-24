@@ -25,8 +25,14 @@ const GardePharmacie = ({}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/api/pharmaciegarde/save', {pk,
-            dateDebut, dateFin, garde: {id: gardeId}, pharmacie: {id: pharmacieId}
+        axios.post('/api/pharmaciegarde/save', {
+            pk:{
+                pharmacie:pharmacieId,
+                garde:gardeId,
+                dateDebut,
+            },
+            dateFin,
+
         }).then((response) => {
             setDateDebut("");
             setDateFin("");
