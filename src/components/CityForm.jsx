@@ -1,7 +1,8 @@
 import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {Card, CardBody, CardHeader, CardTitle} from "reactstrap";
+import {Header} from "./Layout";
 
 const CityForm = () => {
     const [nom, setName] = useState("");
@@ -14,7 +15,11 @@ const CityForm = () => {
         });
     };
 
-    return (<div className="container mt-3  p-5">
+    return (
+        <div>
+            <Header/>
+            <div className="main-wrapper">
+                <div className="container mt-3  p-5">
         <Card className="shadow-lg">
             <CardHeader className="d-flex bg-success   justify-content-between flex-row">
                 <CardTitle className="text-white">create zone</CardTitle>
@@ -36,9 +41,12 @@ const CityForm = () => {
                             </div>
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-12">
-                            <button type="submit" className="btn w-100  btn-outline-success">
-                                Create
-                            </button>
+                            <Link to="/city-list">
+                                <button type="submit" className="btn w-100  btn-outline-success">
+                                    Create
+                                </button>
+                            </Link>
+
                         </div>
                     </div>
 
@@ -46,6 +54,8 @@ const CityForm = () => {
                 </form>
             </CardBody>
         </Card>
+            </div>
+            </div>
     </div>);
 };
 

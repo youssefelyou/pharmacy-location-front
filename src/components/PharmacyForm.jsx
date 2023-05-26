@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Card, CardBody, CardHeader, CardTitle} from "reactstrap";
+import {Header} from "./Layout";
 
 const PharmacyForm = ({}) => {
     const [nom, setNom] = useState('');
@@ -44,6 +45,9 @@ const PharmacyForm = ({}) => {
 
 
     return (
+        <div>
+            <Header/>
+            <div className="main-wrapper">
         <div className="container mt-3  p-5">
             <Card className="shadow-lg">
                 <CardHeader className="d-flex bg-success   justify-content-between flex-row">
@@ -108,6 +112,8 @@ const PharmacyForm = ({}) => {
                     </form>
                 </CardBody>
             </Card>
+        </div>
+            </div>
         </div>
     );
 }

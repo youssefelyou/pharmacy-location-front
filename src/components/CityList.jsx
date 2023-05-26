@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import {Header} from "./Layout";
 
 const CityList = () => {
     const [cities, setCities] = useState([]);
@@ -33,10 +34,14 @@ const CityList = () => {
         }
     };
 
-    return (<div className="container bg-body mt-3 shadow-lg p-5">
+    return (
+        <div>
+            <Header/>
+            <div className="main-wrapper">
+                <div className="container bg-body mt-3 shadow-lg p-5">
         <div className="d-flex justify-content-between flex-row">
             <h2>Cities</h2>
-            <Link to="/create-city">
+            <Link to="/admin/create-city">
                 <a className="btn text-center btn-sm btn-outline-success">new city</a>
 
             </Link>
@@ -66,7 +71,8 @@ const CityList = () => {
             </tr>))}
             </tbody>
         </table>
-
+                </div>
+            </div>
     </div>);
 };
 

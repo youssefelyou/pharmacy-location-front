@@ -1,0 +1,22 @@
+.pharmacy-filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pharmacy-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/*.card {*/
+/*    width: 500px;*/
+/*}*/
+
+.card:hover {
+    cursor: pointer;
+    /* Add hover styles as desired */
+}

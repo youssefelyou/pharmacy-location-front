@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import {Header} from "./Layout";
 
 const ZoneByville = () => {
     const [zones, setZones] = useState([]);
@@ -21,6 +22,9 @@ const ZoneByville = () => {
     };
 
     return (
+        <div>
+            <Header/>
+            <div className="main-wrapper">
         <div className="container bg-body mt-3 shadow-lg p-5">
 
             <div className="d-flex justify-content-between flex-row">
@@ -60,6 +64,8 @@ const ZoneByville = () => {
                 ))}
                 </tbody>
             </table>
+        </div>
+            </div>
         </div>
     );
 };

@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 
 const API_URL = 'http://localhost:8080/api/auth';
 
-const setAuthToken = token => {
+export const setAuthToken = token => {
     if (token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } else {
@@ -29,13 +29,14 @@ const isTokenExpired = token => {
 }
 
 
-
 const register = async (name, email, password) => {
     await axios.post(`${API_URL}/register`, {name, email, password});
 }
 
-const logout = () => {
+export const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href="/login";
     setAuthToken(null);
 }
 
@@ -47,7 +48,13 @@ const isAuthenticated = () => {
     return !!token && !isTokenExpired(token);
 }
 
-export {
+let isLogged = () => {
+    let token = localStorage.getItem('token')
+    return token === null
+}
+
+
+export const auth = {
     setAuthToken,
     getTokenExpirationDate,
     isTokenExpired,
@@ -55,5 +62,7 @@ export {
     logout,
     getAuthToken,
     isAuthenticated,
-    getUserFromLocalCache
+    getUserFromLocalCache,
+    isLogged,
+
 };

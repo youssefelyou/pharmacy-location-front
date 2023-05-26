@@ -2,22 +2,23 @@ import React, {useEffect, useState} from "react";
 import { Card, CardBody, CardHeader, CardTitle, Table, Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import axios from "axios";
 import {Link} from "react-router-dom";
-import { faPlus, faTrash, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash, faMapMarkerAlt,faEdit } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import QRCode from "qrcode.react";
+import {Header} from "./Layout";
 
 const PharmacyList = ({ zoneId }) => {
     const [pharmacies, setPharmacies] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
-    const [updatedPharmacy, setUpdatedPharmacy] = useState({
-        id: null,
-        nom: '',
-        addresse: '',
-        latitude: '',
-        longitude: '',
-        photo: '',
-        zone: '',
-    });
+    const [pharmacienom, setPharmacieNom] = useState('');
+    const [pharmacielatitude, setPharmacieLatitude] = useState('');
+    const [pharmacielongitude, setPharmacieLongitude] = useState('');
+    const [pharmacieAdresse, setPharmacieAdresse] = useState('');
+    const [pharmaciePhoto, setPharmaciePhoto] = useState('');
+    const [pharmacieZone, setPharmacieZone] = useState('');
+    const [zones, setZones] = useState([]);
+    const [selectedPharmacie, setSelectedPharmacie] = useState(null);
+
 
 
     useEffect(() => {
@@ -39,51 +40,79 @@ const PharmacyList = ({ zoneId }) => {
     };
 
     const handleLocation = (latitude, longitude) => {
-        // Open a new tab or window with the location based on the latitude and longitude
         window.open(`https://maps.google.com/maps?q=${latitude},${longitude}`);
     };
 
     const openUpdateModal = (pharmacie) => {
-        setUpdatedPharmacy({
-            id: pharmacie.id,
-            nom: pharmacie.nom,
-            addresse: pharmacie.addresse,
-            latitude: pharmacie.latitude,
-            longitude: pharmacie.longitude,
-            photo: pharmacie.photo,
-            zone: pharmacie.zone.nom,
-        });
+        setSelectedPharmacie(pharmacie);
+        setPharmacieNom(pharmacie.nom);
+        setPharmacieLatitude(pharmacie.latitude);
+        setPharmacieLongitude(pharmacie.longitude);
+        setPharmacieAdresse(pharmacie.adresse);
+        setPharmaciePhoto(pharmacie.photos);
+        setPharmacieZone(pharmacie.zone.id);
         setIsOpen(true);
     };
 
-    const handleUpdate = () => {
-        axios.put(`/api/pharmacies/${updatedPharmacy.id}`, updatedPharmacy)
-            .then(() => {
-                setPharmacies(pharmacies => pharmacies.map(pharmacie => {
-                    if (pharmacie.id === updatedPharmacy.id) {
-                        return updatedPharmacy;
-                    }
-                    return pharmacie;
-                }));
+    // const handleUpdate = () => {
+    //     console.log(updatedPharmacy)
+    //     axios.put(`/api/pharmacies/${updatedPharmacy.id}`, updatedPharmacy)
+    //         .then(() => {
+    //             setPharmacies(pharmacies => pharmacies.map(pharmacie => {
+    //                 if (pharmacie.id === updatedPharmacy.id) {
+    //                     return updatedPharmacy;
+    //                 }
+    //                 return pharmacie;
+    //             }));
+    //
+    //             setIsOpen(false);
+    //         })
+    //         .catch(error => {
+    //             console.error("Error updating pharmacy:", error);
+    //
+    //         });
+    // };
 
-                setIsOpen(false);
+    const handleEditPharmacie = async (id) => {
+        try {
+            const response = await axios.put(`/api/controller/pharmacies/${id}`, {
+                nom:pharmacienom,
+                longitude:pharmacielongitude,
+                latitude:pharmacielatitude,
+                adresse:pharmacieAdresse,
+                photos:pharmaciePhoto,
+                zone: {
+                    id: pharmacieZone
+                }
+
             })
-            .catch(error => {
-                console.error("Error updating pharmacy:", error);
-
+            const updatedPharmacie = pharmacies.map((pharmacie) => {
+                if (pharmacie.id === id) {
+                    return response.data;
+                }else{
+                    return pharmacie;
+                }
             });
+            setPharmacies(updatedPharmacie);
+            setIsOpen(false);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handlePhotoChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = (e) => {
-            setUpdatedPharmacy({ ...updatedPharmacy, photo: e.target.result });
+            setPharmaciePhoto(e.target.result);
         };
         reader.readAsDataURL(file);
     };
 
     return (
+        <div>
+            <Header/>
+            <div className="main-wrapper">
         <div>
             <div className="container bg-body mt-3 shadow-lg p-5">
                 <div className="row">
@@ -92,7 +121,7 @@ const PharmacyList = ({ zoneId }) => {
                             <CardHeader className="d-flex bg-success justify-content-between flex-row">
                                 <CardTitle className="text-white">Pharmacies</CardTitle>
 
-                                <Link to={`/pharmacie-create`}>
+                                <Link to={`/admin/pharmacie-create`}>
                                     <a className="btn  btn-sm btn-outline-light">
                                         <FontAwesomeIcon icon={faPlus}/>
                                         New Pharmacy
@@ -131,11 +160,11 @@ const PharmacyList = ({ zoneId }) => {
                                                 size={50}/>
                                             </td>
                                             <td>
-                                                <FontAwesomeIcon icon={ faTrash} onClick={() => handleDelete(pharmacie.id)}/>
-                                                <button onClick={() => handleLocation(pharmacie.latitude, pharmacie.longitude)}>
-                                                    <FontAwesomeIcon icon={faMapMarkerAlt} />
-                                                </button>
-                                                <button onClick={() => openUpdateModal(pharmacie)}>Update</button>
+                                                <button><FontAwesomeIcon icon={ faTrash} onClick={() => handleDelete(pharmacie.id)}/></button>
+                                               <button><FontAwesomeIcon icon={faMapMarkerAlt} onClick={() => handleLocation(pharmacie.latitude, pharmacie.longitude)} />
+                                               </button>
+                                                <button onClick={() => openUpdateModal(pharmacie)}> <FontAwesomeIcon icon={faEdit} />
+                                                    </button>
                                             </td>
 
                                         </tr>
@@ -157,8 +186,7 @@ const PharmacyList = ({ zoneId }) => {
                                 type="text"
                                 name="nom"
                                 id="nom"
-                                value={updatedPharmacy.nom}
-                                onChange={(e) => setUpdatedPharmacy({ ...updatedPharmacy, nom: e.target.value })}
+                                value={pharmacienom} onChange={(e) => setPharmacieNom(e.target.value)}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -167,9 +195,8 @@ const PharmacyList = ({ zoneId }) => {
                                 type="text"
                                 name="addresse"
                                 id="addresse"
-                                value={updatedPharmacy.addresse}
-                                onChange={(e) => setUpdatedPharmacy({ ...updatedPharmacy, addresse: e.target.value })}
-                            />
+                                value={pharmacieAdresse} onChange={(e) => setPharmacieAdresse(e.target.value)}
+                                 />
                         </FormGroup>
                         <FormGroup>
                             <Label for="latitude">Latitude</Label>
@@ -177,9 +204,8 @@ const PharmacyList = ({ zoneId }) => {
                                 type="text"
                                 name="latitude"
                                 id="latitude"
-                                value={updatedPharmacy.latitude}
-                                onChange={(e) => setUpdatedPharmacy({ ...updatedPharmacy, latitude: e.target.value })}
-                            />
+                                value={pharmacielatitude} onChange={(e) => setPharmacieLatitude(e.target.value)}
+                               />
                         </FormGroup>
                         <FormGroup>
                             <Label for="longitude">Longitude</Label>
@@ -187,32 +213,34 @@ const PharmacyList = ({ zoneId }) => {
                                 type="text"
                                 name="longitude"
                                 id="longitude"
-                                value={updatedPharmacy.longitude}
-                                onChange={(e) => setUpdatedPharmacy({ ...updatedPharmacy, longitude: e.target.value })}
-                            />
+                                value={pharmacielongitude} onChange={(e) => setPharmacieLongitude(e.target.value)}/>
                         </FormGroup>
                         <FormGroup>
                             <Label for="photo">Photo</Label>
                             <input type="file" className="form-control" accept="image/*" id="photo"
                                    onChange={handlePhotoChange}/>
                         </FormGroup>
-                        {/*<FormGroup>*/}
-                        {/*    <Label for="zone">Zone</Label>*/}
-                        {/*    <select className="form-control" id="zoneId" value={zoneId}*/}
-                        {/*            onChange={(event) => setUpdatedPharmacy({ ...updatedPharmacy, zone: e.target.value })}>*/}
-                        {/*        <option value="">Select zone</option>*/}
-                        {/*        {zone && zone.map((zone) => (<option key={zone.id} value={zone.id}>*/}
-                        {/*            {zone?.nom}*/}
-                        {/*        </option>))}*/}
-                        {/*    </select>*/}
-                        {/*</FormGroup>*/}
+                        <FormGroup>
+                            <Label for="zone">Zone</Label>
+                            <select className="form-control" id="zoneId"
+                                    value={pharmacieZone} onChange={(e) => setPharmacieZone(e.target.value)}>
+                                <option value="">Select zone</option>
+                                {zones.map((zone) => (
+                                    <option key={zone.id} value={zone.id}>
+                                        {zone.nom}
+                                    </option>
+                                ))}
+                            </select>
+                        </FormGroup>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={handleUpdate}>Update</Button>
+                    <Button color="primary" onClick={() => handleEditPharmacie(selectedPharmacie.id)}>Update</Button>
                     <Button color="secondary" onClick={() => setIsOpen(!isOpen)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
+        </div>
+            </div>
         </div>
     );
 };

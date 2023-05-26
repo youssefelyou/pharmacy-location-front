@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Card, CardBody, CardHeader, CardTitle} from "reactstrap";
+import {Header} from "./Layout";
 
 const GardePharmacie = ({}) => {
     const [dateDebut, setDateDebut] = useState('');
@@ -43,6 +44,9 @@ const GardePharmacie = ({}) => {
     };
 
     return (
+        <div>
+            <Header/>
+            <div className="main-wrapper">
         <div className="container mt-3  p-5">
             <Card className="shadow-lg">
                 <CardHeader className="d-flex bg-success   justify-content-between flex-row">
@@ -101,6 +105,8 @@ const GardePharmacie = ({}) => {
                     </form>
                 </CardBody>
             </Card>
+        </div>
+            </div>
         </div>
     );
 }

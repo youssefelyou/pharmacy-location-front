@@ -1,89 +1,140 @@
 import React, {useState} from 'react';
-import {Button, Col, Container, Input, Row} from 'reactstrap';
 import {useNavigate} from "react-router-dom";
 import AuthService from "../auth/AuthService";
 
-
+import {
+    MDBBtn,
+    MDBCheckbox,
+    MDBContainer,
+    MDBInput,
+    MDBTabs,
+    MDBTabsContent,
+    MDBTabsItem,
+    MDBTabsLink,
+    MDBTabsPane
+} from 'mdb-react-ui-kit';
+import axios from "axios";
 
 function SignIn() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [firstname, setFirstName] = useState("");
+    const [lastname, setLastName] = useState("");
+    const [justifyActive, setJustifyActive] = useState('tab1');
+    ;
+    const [error, setError] = useState('');
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
             const user = await AuthService.login(email, password);
             console.log(user);
-            if (user?.role === 'ADMIN') {
-                navigate('/');
-            } else {
-                navigate('/pharmacie');
-            }
+            navigate('/admin/home');
 
         } catch (error) {
             console.error(error);
         }
     };
 
+    const handleSignUp = (event) => {
+        event.preventDefault();
+
+        axios.post('http://localhost:8080/api/auth/register', {
+            username: username,
+            password: password,
+            firstname: firstname,
+            lastname: lastname,
+            role: 'USER',
+            email: email
+        }).then(response => {
+            window.location = '/';
+        }).catch(error => {
+            setError(error.response.data.message);
+        });
+    };
+
+    const handleJustifyClick = (value) => {
+        if (value === justifyActive) {
+            return;
+        }
+
+        setJustifyActive(value);
+    };
+
     return (
-        <Container fluid className="p-3 my-5 h-custom">
+        <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
 
-            <Row>
+            <MDBTabs pills justify className='mb-3 d-flex flex-row justify-content-between'>
+                <MDBTabsItem>
+                    <MDBTabsLink onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'}>
+                        Login
+                    </MDBTabsLink>
+                </MDBTabsItem>
+                <MDBTabsItem>
+                    <MDBTabsLink onClick={() => handleJustifyClick('tab2')} active={justifyActive === 'tab2'}>
+                        Register
+                    </MDBTabsLink>
+                </MDBTabsItem>
+            </MDBTabs>
 
-                <Col col='10' md='6'>
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                         className="img-fluid"/>
-                </Col>
+            <MDBTabsContent>
 
-                <Col col='4' md='6'>
+                <MDBTabsPane show={justifyActive === 'tab1'}>
 
-                    <div className="d-flex flex-row align-items-center justify-content-center">
+                    <div className="text-center mb-3">
+                        <p>Sign in with:</p>
+                    </div>
 
-                        <p className="lead fw-normal mb-0 me-3">Sign in with</p>
+                    <MDBInput wrapperClass='mb-4' onChange={e => setEmail(e.target.value)}
+                              label='Email address'
+                              id='form1'
+                              value={email}
+                              type='email'/>
+                    <MDBInput wrapperClass='mb-4'
+                              label='Password'
+                              id='form2'
+                              value={password}
+                              onChange={e => setPassword(e.target.value)}
+                              type='password'/>
+
+
+                    <MDBBtn className="mb-4 w-100" onClick={handleSubmit}>Sign in</MDBBtn>
+
+
+                </MDBTabsPane>
+
+                <MDBTabsPane show={justifyActive === 'tab2'}>
+
+                    <div className="text-center mb-3">
 
 
                     </div>
 
-                    <div className="divider d-flex align-items-center my-4">
-                        <p className="text-center fw-bold mx-3 mb-0">Or</p>
+                    <MDBInput wrapperClass='mb-4' label='First Name' id='form1' type='text'
+                              onChange={event => setFirstName(event.target.value)}/>
+                    <MDBInput wrapperClass='mb-4' label='Last Name' id='form1' type='text'
+                              onChange={event => setLastName(event.target.value)}/>
+                    <MDBInput wrapperClass='mb-4' label='Username' id='form1' type='text'
+                              onChange={event => setUsername(event.target.value)}/>
+                    <MDBInput wrapperClass='mb-4' label='Email' id='form1' type='email'
+                              onChange={event => setEmail(event.target.value)}/>
+                    <MDBInput wrapperClass='mb-4' label='Password' id='form1' type='password'
+                              onChange={event => setPassword(event.target.value)}/>
+
+                    <div className='d-flex justify-content-center mb-4'>
+                        <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I have read and agree to the terms'/>
                     </div>
 
-                    <Input wrapperClass='mb-4'
-                           onChange={e => setEmail(e.target.value)}
-                           label='Email address'
-                           placeholder="Email address"
-                           value={email}
-                           id='formControlLg' type='email' size="lg"/>
+                    <MDBBtn className="mb-4 w-100" onClick={handleSignUp}>Sign up</MDBBtn>
 
+                </MDBTabsPane>
 
-                    <Input wrapperClass='mb-4' label='Password' value={password}
-                           placeholder="Password"
-                           onChange={e => setPassword(e.target.value)}
-                           id='formControlLg' type='password' size="lg"/>
+            </MDBTabsContent>
 
-                    <div className="d-flex justify-content-between mb-4">
-                        <Input type='checkbox' name='flexCheck' value='' id='flexCheckDefault' label='Remember me'/>
-                        Remember me
-                        <a href="!#">Forgot password?</a>
-                    </div>
-
-                    <div className='text-center text-md-start mt-4 pt-2'>
-                        <Button onClick={handleSubmit} className="mb-0 px-5" size='lg'>Login</Button>
-
-                        {/*<p className="small fw-bold mt-2 pt-1 mb-2">Don't have an account? <a href="#!"*/}
-                        {/*                                                                      className="link-danger">Register</a>*/}
-                        {/*</p>*/}
-                    </div>
-
-                </Col>
-
-            </Row>
-
-
-
-
-        </Container>
+        </MDBContainer>
     );
 }
 

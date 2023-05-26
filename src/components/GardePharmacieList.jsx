@@ -4,6 +4,7 @@ import {Card, CardBody, CardHeader, CardTitle, Table} from "reactstrap";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {Header} from "./Layout";
 
 const GardePharmacieList = () => {
     const [gardepharmacie, setGardeharmacies] = useState([]);
@@ -34,9 +35,20 @@ const GardePharmacieList = () => {
         fetchpharmaciegarde();
     }, );
 
+    const handledelete = async (dateDebut, idPharmacie, idGarde) => {
+        try {
+            await axios.delete(`/api/pharmaciegarde/${dateDebut}/idpharmacie/${idPharmacie}/idgarde/${idGarde}`);
+            console.log('Pharmacie garde deleted successfully');
+        } catch (error) {
+            console.error('Error deleting pharmacie garde:', error);
+        }
+    };
 
 
     return (
+        <div>
+            <Header/>
+            <div className="main-wrapper">
         <div>
             <div className="container bg-body mt-3 shadow-lg p-5">
                 <div className="row">
@@ -45,7 +57,7 @@ const GardePharmacieList = () => {
                             <CardHeader className="d-flex bg-success justify-content-between flex-row">
                                 <CardTitle className="text-white">Garde Pharmacie</CardTitle>
 
-                                <Link to={`/pharmaciegarde-create`}>
+                                <Link to={`/admin/pharmaciegarde-create`}>
                                     <a className="btn  btn-sm btn-outline-light">
                                         <FontAwesomeIcon icon={faPlus}/>
                                         New Garde Pharmacy
@@ -75,7 +87,7 @@ const GardePharmacieList = () => {
                                                 <td>{gardes.find((garde) => garde.id === gardepharmacie.pk.garde)?.type}</td>
                                                 <td>{new Date(gardepharmacie.pk.dateDebut).toLocaleDateString()}</td>
                                                 <td>{new Date(gardepharmacie.dateFin).toLocaleDateString()}</td>
-                                                <td></td>
+                                                <td> <button><FontAwesomeIcon icon={ faTrash} onClick={() => handledelete(gardepharmacie.pk.dateDebut,gardepharmacie.pk.pharmacie,gardepharmacie.pk.garde)}/></button></td>
                                             </tr>
                                         );
                                     })}
@@ -85,6 +97,8 @@ const GardePharmacieList = () => {
                         </Card>
                     </div>
                 </div>
+            </div>
+        </div>
             </div>
         </div>
     );

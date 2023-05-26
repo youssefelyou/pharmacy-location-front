@@ -3,6 +3,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import Modal from "react-modal";
 import {Button, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import {Header} from "./Layout";
 
 const ZoneList = ({villeId}) => {
     const [zones, setZones] = useState([]);
@@ -52,10 +53,13 @@ const ZoneList = ({villeId}) => {
     };
 
     return (
+        <div>
+            <Header/>
+            <div className="main-wrapper">
         <div className="container bg-body mt-3 shadow-lg p-5">
             <div className="d-flex justify-content-between flex-row">
                 <h2>Zones</h2>
-                <Link to={`/create-zone`}>
+                <Link to={`/admin/create-zone`}>
                     <a className="btn text-center btn-sm btn-outline-success">new zone</a>
 
                 </Link>
@@ -121,6 +125,8 @@ const ZoneList = ({villeId}) => {
                 </ModalFooter>
             </Modal>
 
+        </div>
+            </div>
         </div>
     );
 };

@@ -1,13 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import {logout} from '../auth/auth'
+import avatar from '../image/avatar.png';
 
 function Header() {
     const location = useLocation();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    // Check if the current route is the sign-in page
+    const handleAvatarClick = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleLogout = () => {
+        logout();
+    };
+
+
     const isSignInPage = location.pathname === '/';
+
+
 
     return (
         <header className="navbar navbar-expand-lg navbar-dark bg-success">
@@ -23,32 +36,64 @@ function Header() {
                     {!isSignInPage && (
                         <>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/" activeClassName="active">
+                                <NavLink className="nav-link" to="/admin/home" activeClassName="active">
+                                    Home
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="/admin/city-list" activeClassName="active">
                                     Ville
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/zone" activeClassName="active">
+                                <NavLink className="nav-link" to="/admin/zone" activeClassName="active">
                                     Zone
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/zoneByCity" activeClassName="active">
+                                <NavLink className="nav-link" to="/admin/zoneByCity" activeClassName="active">
                                     Zone par ville
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/pharmacie" activeClassName="active">
+                                <NavLink className="nav-link" to="/admin/pharmacie" activeClassName="active">
                                     Pharmacie
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/pharmaciegarde" activeClassName="active">
+                                <NavLink className="nav-link" to="/admin/pharmaciegarde" activeClassName="active">
                                     Pharmacie de Garde
                                 </NavLink>
                             </li>
                         </>
                     )}
+
+                    <div className="d-flex align-items-center">
+                        <div className="nav-item dropdown">
+                            <div
+                                className={`nav-link dropdown-toggle ${isDropdownOpen ? 'show' : ''}`}
+                                onClick={handleAvatarClick}
+                            >
+                                <img
+                                    className="avatar"
+                                    alt="User Avatar"
+                                    src={avatar}
+                                    width={20}
+                                    height={20}
+
+                                />
+                            </div>
+                            {isDropdownOpen && (
+                                <ul className="dropdown-menu dropdown-menu-end show">
+                                    <li>
+                                        <button className="dropdown-item" onClick={handleLogout}>
+                                            Logout
+                                        </button>
+                                    </li>
+                                </ul>
+                            )}
+                        </div>
+                    </div>
                 </ul>
             </nav>
         </header>
