@@ -23,7 +23,6 @@ const ZoneForm = ({onZoneAdded}) => {
                 id: villeId
             }
         }).then((response) => {
-            //onZoneAdded(response.data);
             setName("");
             setvilleId("");
         });

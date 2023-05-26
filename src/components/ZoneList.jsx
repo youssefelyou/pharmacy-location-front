@@ -5,11 +5,15 @@ import Modal from "react-modal";
 import {Button, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {Header} from "./Layout";
 
-const ZoneList = ({villeId}) => {
+const ZoneList = () => {
     const [zones, setZones] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedZone, setSelectedZone] = useState(null);
     const [ville, setville] = useState([]);
+    const [nom, setName] = useState("");
+    const [villeId, setvilleId] = useState("");
+
+
 
     const toggle = () => setModalIsOpen(!modalIsOpen);
 
@@ -47,10 +51,17 @@ const ZoneList = ({villeId}) => {
         setModalIsOpen(false);
     };
 
-    const handleSave = () => {
-        // TODO: handle save logic
-        handleCloseModal();
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        axios.post('/api/zones/save', selectedZone)
+            .then((response) => {
+                setSelectedZone(null);
+                setModalIsOpen(false);
+                window.location.reload()
+            })
+
     };
+
 
     return (
         <div>
@@ -99,24 +110,36 @@ const ZoneList = ({villeId}) => {
                     <div className="row">
                         <div className="col-md-6">
                             <label>Nom de la zone:</label>
-                            <input type="text" className="form-control" value={selectedZone && selectedZone.nom}/>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={selectedZone ? selectedZone.nom : ""}
+                                onChange={(event) => setSelectedZone({ ...selectedZone, nom: event.target.value })}
+                            />
                         </div>
-                        <div className="col-md-6">
-                            <label>Ville:</label>
-                            <select  className="form-select" value={selectedZone && selectedZone.ville && selectedZone.ville.id}>
+
+                        <div className="col-md-6 mb-18">
+                            <select
+                                className="form-select"
+                                value={selectedZone ? selectedZone.ville && selectedZone.ville.id : ""}
+                                onChange={(event) => setSelectedZone({ ...selectedZone, ville: { id: event.target.value } })}
+                            >
+
+                                <option value="">Select city</option>
                                 {ville.map((ville) => (
                                     <option key={ville.id} value={ville.id}>
                                         {ville.nom}
                                     </option>
                                 ))}
                             </select>
+
                         </div>
                     </div>
                 </ModalBody>
 
 
                 <ModalFooter className="p-5">
-                    <Button color="success" className="m-2" onClick={handleSave}>
+                    <Button color="success" className="m-2" onClick={handleSubmit}>
                         save
                     </Button>{' '}
                     <Button color="secondary" className="m-2" onClick={toggle}>
