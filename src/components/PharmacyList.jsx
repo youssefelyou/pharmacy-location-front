@@ -6,6 +6,7 @@ import { faPlus, faTrash, faMapMarkerAlt,faEdit } from "@fortawesome/free-solid-
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import QRCode from "qrcode.react";
 import {Header} from "./Layout";
+import {Dialog} from "@mui/material";
 
 const PharmacyList = ({ zoneId }) => {
     const [pharmacies, setPharmacies] = useState([]);
@@ -18,6 +19,8 @@ const PharmacyList = ({ zoneId }) => {
     const [pharmacieZone, setPharmacieZone] = useState('');
     const [zones, setZones] = useState([]);
     const [selectedPharmacie, setSelectedPharmacie] = useState(null);
+    const [openMapModal, setOpenMapModal] = useState(false);
+
 
 
 
@@ -39,8 +42,13 @@ const PharmacyList = ({ zoneId }) => {
         }
     };
 
-    const handleLocation = (latitude, longitude) => {
-        window.open(`https://maps.google.com/maps?q=${latitude},${longitude}`);
+    const handleLocation = (pharmacy) => {
+        setSelectedPharmacie(pharmacy);
+        setOpenMapModal(true);
+    };
+
+    const handleCloseMapModal = () => {
+        setOpenMapModal(false);
     };
 
     const openUpdateModal = (pharmacie) => {
@@ -136,10 +144,9 @@ const PharmacyList = ({ zoneId }) => {
                                 <Table bordered>
                                     <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Nom</th>
                                         <th>Addresse</th>
-                                        <th>Latitude</th>
-                                        <th>Longitude</th>
                                         <th>Photo</th>
                                         <th>Zone</th>
                                         <th>Code QR</th>
@@ -149,10 +156,9 @@ const PharmacyList = ({ zoneId }) => {
                                     <tbody>
                                     {pharmacies.map((pharmacie) => (
                                         <tr key={pharmacie.id}>
+                                            <td>{pharmacie.id}</td>
                                             <td>{pharmacie.nom}</td>
                                             <td>{pharmacie.addresse}</td>
-                                            <td>{pharmacie.latitude}</td>
-                                            <td>{pharmacie.longitude}</td>
                                             <td><img src={pharmacie.photo} alt={pharmacie.nom} width="100" height="100" /></td>
                                             <td>{pharmacie.zone && pharmacie.zone.nom}</td>
                                             <td><QRCode
@@ -161,8 +167,9 @@ const PharmacyList = ({ zoneId }) => {
                                             </td>
                                             <td>
                                                 <button><FontAwesomeIcon icon={ faTrash} onClick={() => handleDelete(pharmacie.id)}/></button>
-                                               <button><FontAwesomeIcon icon={faMapMarkerAlt} onClick={() => handleLocation(pharmacie.latitude, pharmacie.longitude)} />
-                                               </button>
+                                                <button onClick={() => handleLocation(pharmacie)}>
+                                                    <FontAwesomeIcon icon={faMapMarkerAlt} />
+                                                </button>
                                                 <button onClick={() => openUpdateModal(pharmacie)}> <FontAwesomeIcon icon={faEdit} />
                                                     </button>
                                             </td>
@@ -241,6 +248,22 @@ const PharmacyList = ({ zoneId }) => {
             </Modal>
         </div>
             </div>
+            <Dialog open={openMapModal} onClose={handleCloseMapModal}>
+                <div className="modal-content">
+                    {selectedPharmacie && (
+                        <div>
+                            <iframe
+                                width="800"
+                                height="800"
+                                frameBorder="0"
+                                style={{ border: '1px solid #ccc'}}
+                                src={`https://maps.google.com/maps?q=${selectedPharmacie.latitude},${selectedPharmacie.longitude}&hl=es;&output=embed`}
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                    )}
+                </div>
+            </Dialog>
         </div>
     );
 };

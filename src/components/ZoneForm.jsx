@@ -44,7 +44,11 @@ const ZoneForm = ({onZoneAdded}) => {
                             <div className="col-lg-6 col-md-6 col-sm-12 p-3">
                                 <label htmlFor="nom" className="form-label">Name:</label>
                                 <input type="text" className="form-control" id="nom" value={nom}
-                                       onChange={(event) => setName(event.target.value)}/>
+                                       onChange={(e) => {
+                                           const inputValue = e.target.value;
+                                           const onlyLetters = inputValue.replace(/[^A-Za-z]/g, "");
+                                           setName(onlyLetters);
+                                       }}/>
                             </div>
                             <div className="col-lg-6 col-md-6 col-sm-12 p-3">
                                 <label htmlFor="villeId" className="form-label">ville:</label>

@@ -36,7 +36,12 @@ const CityForm = () => {
                                     placeholder="nom de ville"
                                     id="name"
                                     value={nom}
-                                    onChange={(event) => setName(event.target.value)}
+                                    onChange={(e) => {
+                                        const inputValue = e.target.value;
+                                        const onlyLetters = inputValue.replace(/[^A-Za-z]/g, "");
+                                        setName(onlyLetters);
+                                    }}
+
                                 />
                             </div>
                         </div>

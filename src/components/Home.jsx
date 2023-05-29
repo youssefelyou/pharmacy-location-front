@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardMedia, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import {
+    Card,
+    CardContent,
+    CardMedia,
+    Dialog,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    Typography
+} from '@mui/material';
 import axios from 'axios';
 import '../css/home.css';
 import { Header } from "./Layout";
@@ -13,6 +23,8 @@ function Home() {
     const [selectedVille, setSelectedVille] = useState('');
     const [selectedZone, setSelectedZone] = useState('');
     const [zones, setZones] = useState([]);
+    const [selectedPharmacy, setSelectedPharmacy] = useState(null);
+    const [openMapModal, setOpenMapModal] = useState(false);
 
     useEffect(() => {
         fetchPharmacies();
@@ -28,6 +40,7 @@ function Home() {
             console.error('Error fetching villes:', error);
         }
     };
+
     const fetchZones = async () => {
         try {
             const response = await axios.get('/api/zones/');
@@ -40,7 +53,7 @@ function Home() {
     const handleVilleChange = (event) => {
         const selectedVilleId = event.target.value;
         setSelectedVille(selectedVilleId);
-        setSelectedZone(''); // Reset selected zone when city changes
+        setSelectedZone('');
 
         if (selectedVilleId === '') {
             fetchPharmacies();
@@ -49,7 +62,6 @@ function Home() {
             if (selectedVille) {
                 const selectedZoneId = selectedVille.zoneId;
                 setSelectedZone(selectedZoneId);
-
             }
         }
     };
@@ -64,8 +76,6 @@ function Home() {
                 console.error('Error fetching pharmacies by ville and zone:', error);
             });
     };
-
-
 
     const handleZoneChange = (event) => {
         const selectedZoneId = event.target.value;
@@ -86,9 +96,13 @@ function Home() {
         }
     };
 
-    const handleLocation = (latitude, longitude) => {
-        // Open a new tab or window with the location based on the latitude and longitude
-        window.open(`https://maps.google.com/maps?q=${latitude},${longitude}`);
+    const handleLocation = (pharmacy) => {
+        setSelectedPharmacy(pharmacy);
+        setOpenMapModal(true);
+    };
+
+    const handleCloseMapModal = () => {
+        setOpenMapModal(false);
     };
 
     return (
@@ -148,11 +162,8 @@ function Home() {
                                     <Typography variant="h6">{pharmacy.nom}</Typography>
                                     <Typography variant="body2">
                                         {pharmacy.addresse}{' '}
-                                        <button>
-                                            <FontAwesomeIcon
-                                                icon={faMapMarkerAlt}
-                                                onClick={() => handleLocation(pharmacy.latitude, pharmacy.longitude)}
-                                            />
+                                        <button onClick={() => handleLocation(pharmacy)}>
+                                            <FontAwesomeIcon icon={faMapMarkerAlt} />
                                         </button>
                                     </Typography>
                                     <Typography variant="body2"></Typography>
@@ -172,6 +183,22 @@ function Home() {
                     </div>
                 </div>
             </div>
+            <Dialog open={openMapModal} onClose={handleCloseMapModal}>
+                <div className="modal-content">
+                    {selectedPharmacy && (
+                        <div>
+                            <iframe
+                                width="800"
+                                height="800"
+                                frameBorder="0"
+                                style={{ border: '5px solid #ccc'}}
+                                src={`https://maps.google.com/maps?q=${selectedPharmacy.latitude},${selectedPharmacy.longitude}&hl=es;&output=embed`}
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                    )}
+                </div>
+            </Dialog>
         </div>
     );
 }
