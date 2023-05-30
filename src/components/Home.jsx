@@ -25,12 +25,13 @@ function Home() {
     const [zones, setZones] = useState([]);
     const [selectedPharmacy, setSelectedPharmacy] = useState(null);
     const [openMapModal, setOpenMapModal] = useState(false);
+    const [ville, setVille] = useState('');
+    const [zone, setZone] = useState('');
 
     useEffect(() => {
         fetchPharmacies();
         fetchVilles();
-        fetchZones();
-    }, []);
+    }, [selectedVille, selectedZone]);
 
     const fetchVilles = async () => {
         try {
@@ -41,53 +42,20 @@ function Home() {
         }
     };
 
-    const fetchZones = async () => {
+    const fetchZones = async (villeId) => {
         try {
-            const response = await axios.get('/api/zones/');
+            const response = await axios.get(`/api/zones/villeid/${villeId}`);
             setZones(response.data);
         } catch (error) {
             console.error('Error fetching zones:', error);
         }
     };
 
-    const handleVilleChange = (event) => {
-        const selectedVilleId = event.target.value;
-        setSelectedVille(selectedVilleId);
-        setSelectedZone('');
-
-        if (selectedVilleId === '') {
-            fetchPharmacies();
-        } else {
-            const selectedVille = villes.find((ville) => ville.id === selectedVilleId);
-            if (selectedVille) {
-                const selectedZoneId = selectedVille.zoneId;
-                setSelectedZone(selectedZoneId);
-            }
-        }
-    };
-
-    const fetchPharmaciesByVilleAndZone = (villeId, zoneId) => {
-        axios
-            .get(`/api/villes/${villeId}/zones/${zoneId}/pharmacies`)
-            .then((response) => {
-                setPharmacies(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching pharmacies by ville and zone:', error);
-            });
-    };
-
-    const handleZoneChange = (event) => {
-        const selectedZoneId = event.target.value;
-        setSelectedZone(selectedZoneId);
-        fetchPharmaciesByVilleAndZone(selectedVille, selectedZoneId);
-    };
-
-    const fetchPharmacies = async (villeId, zoneId) => {
+    const fetchPharmacies = async () => {
         try {
             let url = '/api/pharmacies/';
-            if (villeId && zoneId) {
-                url = `/api/villes/${villeId}/zones/${zoneId}/pharmacies`;
+            if (selectedVille && selectedZone) {
+                url = `/api/villes/villes/${selectedVille.nom}/zones/${selectedZone.nom}/pharmacies`;
             }
             const response = await axios.get(url);
             setPharmacies(response.data);
@@ -95,6 +63,30 @@ function Home() {
             console.error('Error fetching pharmacies:', error);
         }
     };
+
+    const findZonesByVille = (nom) => {
+        const selectedVille = villes.find((ville) => ville.nom === nom);
+        if (selectedVille) {
+            setSelectedVille(selectedVille);
+            fetchZones(selectedVille.id);
+        }
+    };
+
+    const onChangeVille = (value) => {
+        console.log(`selected ${value}`);
+        const selectedVille = villes.find((ville) => ville.nom === value);
+        setSelectedVille(selectedVille);
+        setSelectedZone('');
+        findZonesByVille(selectedVille?.nom);
+    };
+
+
+    const onChangeZone = (value) => {
+        console.log(`selected ${value}`);
+        const selectedZone = zones.find((zone) => zone.nom === value);
+        setSelectedZone(selectedZone);
+    };
+
 
     const handleLocation = (pharmacy) => {
         setSelectedPharmacy(pharmacy);
@@ -115,44 +107,34 @@ function Home() {
                         labelId="ville-select-label"
                         id="ville-select"
                         label="Villes"
-                        value={selectedVille}
-                        onChange={handleVilleChange}
+                        value={selectedVille?.nom}
+                        onChange={(e) => onChangeVille(e.target.value)}
                     >
                         <MenuItem value="">All cities</MenuItem>
                         {villes?.map((ville) => (
-                            <MenuItem key={ville.id} value={ville.id}>
+                            <MenuItem key={ville.id} value={ville.nom}>
                                 {ville.nom}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
-                {selectedVille &&
-                    (
-                        <FormControl sx={{ minWidth: 100 }}>
-                            <InputLabel id="demo-simple-select-label">Zones</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Zones"
-                                value={selectedZone}
-                                onChange={handleZoneChange}
-                            >
-                                <MenuItem value="">All zones</MenuItem>
-                                {villes?.map((ville) => {
-                                    if (ville.id === selectedVille) {
-                                        return ville.zones?.map((zone) => (
-                                            <MenuItem key={zone.id} value={zone.id}>
-                                                {zone?.nom}
-                                            </MenuItem>
-                                        ));
-                                    }
-                                    return null;
-                                })}
-                            </Select>
-                        </FormControl>
-
-
-                    )}
+                <FormControl sx={{ minWidth: 100 }}>
+                    <InputLabel id="zone-select-label">Zones</InputLabel>
+                    <Select
+                        labelId="zone-select-label"
+                        id="zone-select"
+                        label="zone"
+                        value={selectedZone?.nom}
+                        onChange={(e) => onChangeZone(e.target.value)}
+                    >
+                        <MenuItem value="">All zones</MenuItem>
+                        {zones?.map((zone) => (
+                            <MenuItem key={zone.nom} value={zone.nom}>
+                                {zone.nom}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <div className="pharmacy-filter-container">
                     <div className="pharmacy-cards">
                         {pharmacies.map((pharmacy) => (
@@ -169,11 +151,7 @@ function Home() {
                                     <Typography variant="body2"></Typography>
                                     <Typography variant="body2">
                                         <QRCode
-                                            value={`Nom: ${pharmacy?.nom}\n Adresse: ${pharmacy.addresse}\n zone: ${
-                                                pharmacy.zone.nom
-                                            }\n localisation:https://maps.google.com/maps?q=${pharmacy.latitude},${
-                                                pharmacy.longitude
-                                            }`}
+                                            value={`Nom: ${pharmacy?.nom}\n Adresse: ${pharmacy.addresse}\n zone: ${pharmacy.zone.nom}\n localisation: https://maps.google.com/maps?q=${pharmacy.latitude},${pharmacy.longitude}`}
                                             size={50}
                                         />
                                     </Typography>
@@ -191,7 +169,7 @@ function Home() {
                                 width="800"
                                 height="800"
                                 frameBorder="0"
-                                style={{ border: '5px solid #ccc'}}
+                                style={{ border: '5px solid #ccc' }}
                                 src={`https://maps.google.com/maps?q=${selectedPharmacy.latitude},${selectedPharmacy.longitude}&hl=es;&output=embed`}
                                 allowFullScreen
                             ></iframe>
