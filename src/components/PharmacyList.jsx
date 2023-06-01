@@ -129,13 +129,11 @@ const PharmacyList = ({ zoneId }) => {
                             <CardHeader className="d-flex bg-success justify-content-between flex-row">
                                 <CardTitle className="text-white">Pharmacies</CardTitle>
 
-                                <Link to={`/admin/pharmacie-create`}>
-                                    <a className="btn  btn-sm btn-outline-light">
-                                        <FontAwesomeIcon icon={faPlus}/>
-                                        New Pharmacy
-                                    </a>
-
+                                <Link to={`/admin/pharmacie-create`} className="btn btn-sm btn-outline-light">
+                                    <FontAwesomeIcon icon={faPlus}/>
+                                    New Pharmacy
                                 </Link>
+
 
                             </CardHeader>
 
