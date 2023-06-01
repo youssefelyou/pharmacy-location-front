@@ -26,7 +26,7 @@ const PharmacyList = ({ zoneId }) => {
 
     useEffect(() => {
         const fetchpharmacie = async () => {
-            const result = await axios(`/api/pharmacies/`);
+            const result = await axios(`https://pharmacy-location.up.railway.app/api/pharmacies/`);
             setPharmacies(result.data);
         };
         fetchpharmacie();
