@@ -13,14 +13,14 @@ const PharmacyForm = ({}) => {
     const [zone, setZone] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/zones').then((response) => {
+        axios.get('https://pharmacy-location.up.railway.app/api/zones').then((response) => {
             setZone(response.data);
         });
     }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/api/pharmacies/save', {
+        axios.post('https://pharmacy-location.up.railway.app/api/pharmacies/save', {
             nom, addresse, latitude, longitude, photo, zone: {
                 id: zoneId
             }

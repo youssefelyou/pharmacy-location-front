@@ -35,7 +35,7 @@ function Home() {
 
     const fetchVilles = async () => {
         try {
-            const response = await axios.get('/api/villes/');
+            const response = await axios.get('https://pharmacy-location.up.railway.app/api/villes/');
             setVilles(response.data);
         } catch (error) {
             console.error('Error fetching villes:', error);
@@ -44,7 +44,7 @@ function Home() {
 
     const fetchZones = async (villeId) => {
         try {
-            const response = await axios.get(`/api/zones/villeid/${villeId}`);
+            const response = await axios.get(`https://pharmacy-location.up.railway.app/api/zones/villeid/${villeId}`);
             setZones(response.data);
         } catch (error) {
             console.error('Error fetching zones:', error);
@@ -53,9 +53,9 @@ function Home() {
 
     const fetchPharmacies = async () => {
         try {
-            let url = '/api/pharmacies/';
+            let url = 'https://pharmacy-location.up.railway.app/api/pharmacies/';
             if (selectedVille && selectedZone) {
-                url = `/api/villes/villes/${selectedVille.nom}/zones/${selectedZone.nom}/pharmacies`;
+                url = `https://pharmacy-location.up.railway.app/api/villes/villes/${selectedVille.nom}/zones/${selectedZone.nom}/pharmacies`;
             }
             const response = await axios.get(url);
             setPharmacies(response.data);

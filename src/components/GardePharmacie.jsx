@@ -13,20 +13,20 @@ const GardePharmacie = ({}) => {
     const [pharmacie, setPharmacie] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/garde/').then((response) => {
+        axios.get('https://pharmacy-location.up.railway.app/api/garde/').then((response) => {
             setGarde(response.data);
         });
     }, []);
 
     useEffect(() => {
-        axios.get(`/api/pharmacies/`).then((response) => {
+        axios.get(`https://pharmacy-location.up.railway.app/api/pharmacies/`).then((response) => {
             setPharmacie(response.data);
         });
     }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/api/pharmaciegarde/save', {
+        axios.post('https://pharmacy-location.up.railway.app/api/pharmaciegarde/save', {
             pk:{
                 pharmacie:pharmacieId,
                 garde:gardeId,

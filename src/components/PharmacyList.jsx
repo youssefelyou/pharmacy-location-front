@@ -36,7 +36,7 @@ const PharmacyList = ({ zoneId }) => {
 
     const handleDelete = (pharmacieId) => {
         if (window.confirm("Are you sure you want to delete this pharmacie?")) {
-            axios.delete(`/api/pharmacies/delete/${pharmacieId}`).then(() => {
+            axios.delete(`https://pharmacy-location.up.railway.app/api/pharmacies/delete/${pharmacieId}`).then(() => {
                 setPharmacies(pharmacies.filter((pharmacie) => pharmacie.id !== pharmacieId));
             });
         }
@@ -83,7 +83,7 @@ const PharmacyList = ({ zoneId }) => {
 
     const handleEditPharmacie = async (id) => {
         try {
-            const response = await axios.put(`/api/controller/pharmacies/${id}`, {
+            const response = await axios.put(`https://pharmacy-location.up.railway.app/api/pharmacies/${id}`, {
                 nom:pharmacienom,
                 longitude:pharmacielongitude,
                 latitude:pharmacielatitude,

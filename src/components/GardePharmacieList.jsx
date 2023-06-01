@@ -13,7 +13,7 @@ const GardePharmacieList = () => {
 
     useEffect(() => {
         const fetchpharmacie = async () => {
-            const result = await axios(`/api/pharmacies/`);
+            const result = await axios(`https://pharmacy-location.up.railway.app/api/pharmacies/`);
             setPharmacies(result.data);
         };
         fetchpharmacie();
@@ -21,7 +21,7 @@ const GardePharmacieList = () => {
 
     useEffect(() => {
         const fetchgarde = async () => {
-            const result = await axios(`/api/garde/`);
+            const result = await axios(`https://pharmacy-location.up.railway.app/api/garde/`);
             setGardes(result.data);
         };
         fetchgarde();
@@ -29,7 +29,7 @@ const GardePharmacieList = () => {
 
     useEffect(() => {
         const fetchpharmaciegarde = async () => {
-            const result = await axios(`/api/pharmaciegarde/`);
+            const result = await axios(`https://pharmacy-location.up.railway.app/api/pharmaciegarde/`);
             setGardeharmacies(result.data);
         };
         fetchpharmaciegarde();
@@ -37,7 +37,7 @@ const GardePharmacieList = () => {
 
     const handledelete = async (dateDebut, idPharmacie, idGarde) => {
         try {
-            await axios.delete(`/api/pharmaciegarde/${dateDebut}/idpharmacie/${idPharmacie}/idgarde/${idGarde}`);
+            await axios.delete(`https://pharmacy-location.up.railway.app/api/pharmaciegarde/${dateDebut}/idpharmacie/${idPharmacie}/idgarde/${idGarde}`);
             console.log('Pharmacie garde deleted successfully');
         } catch (error) {
             console.error('Error deleting pharmacie garde:', error);

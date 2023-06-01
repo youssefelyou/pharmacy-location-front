@@ -50,11 +50,11 @@ function Header() {
                                     Zone
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/admin/zoneByCity" activeClassName="active">
-                                    Zone par ville
-                                </NavLink>
-                            </li>
+                            {/*<li className="nav-item">*/}
+                            {/*    <NavLink className="nav-link" to="/admin/zoneByCity" activeClassName="active">*/}
+                            {/*        Zone par ville*/}
+                            {/*    </NavLink>*/}
+                            {/*</li>*/}
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/admin/pharmacie" activeClassName="active">
                                     Pharmacie

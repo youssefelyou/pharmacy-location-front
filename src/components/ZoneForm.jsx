@@ -10,14 +10,14 @@ const ZoneForm = ({onZoneAdded}) => {
 
 
     useEffect(() => {
-        axios.get('/api/villes/').then((response) => {
+        axios.get('https://pharmacy-location.up.railway.app/api/villes/').then((response) => {
             setville(response.data);
         });
     }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/api/zones/save', {
+        axios.post('https://pharmacy-location.up.railway.app/api/zones/save', {
             nom,
             ville: {
                 id: villeId

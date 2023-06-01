@@ -7,14 +7,14 @@ const CityList = () => {
     const [cities, setCities] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/villes/').then((response) => {
+        axios.get('https://pharmacy-location.up.railway.app/api/villes/').then((response) => {
             setCities(response.data);
         });
     }, []);
 
     const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete this city?")) {
-            axios.delete(`/api/villes/delete/${id}`).then(() => {
+            axios.delete(`https://pharmacy-location.up.railway.app/api/villes/delete/${id}`).then(() => {
                 setCities(cities.filter((city) => city.id !== id));
             });
         }
@@ -23,7 +23,7 @@ const CityList = () => {
     const handleEdit = (id) => {
         const newName = window.prompt("Enter the new name for this city:");
         if (newName) {
-            axios.put(`/api/villes/${id}`, {nom: newName}).then(() => {
+            axios.put(`https://pharmacy-location.up.railway.app/api/villes/${id}`, {nom: newName}).then(() => {
                 setCities(cities.map((city) => {
                     if (city.id === id) {
                         return {...city, nom: newName};

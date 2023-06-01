@@ -42,7 +42,7 @@ function SignIn() {
     const handleSignUp = (event) => {
         event.preventDefault();
 
-        axios.post('http://localhost:8080/api/auth/register', {
+        axios.post('https://pharmacy-location.up.railway.app/api/auth/register', {
             username: username,
             password: password,
             firstname: firstname,

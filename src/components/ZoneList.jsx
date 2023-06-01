@@ -19,7 +19,7 @@ const ZoneList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios(`/api/zones`);
+            const result = await axios(`https://pharmacy-location.up.railway.app/api/zones`);
             setZones(result.data);
         };
         fetchData();
@@ -27,7 +27,7 @@ const ZoneList = () => {
 
     useEffect(() => {
         const fetchville = async () => {
-            const result = await axios(`/api/villes/`);
+            const result = await axios(`https://pharmacy-location.up.railway.app/api/villes/`);
             setville(result.data);
         };
         fetchville();
@@ -35,7 +35,7 @@ const ZoneList = () => {
 
     const handleDelete = (zoneId) => {
         if (window.confirm("Are you sure you want to delete this zone?")) {
-            axios.delete(`/api/zones/${zoneId}`).then(() => {
+            axios.delete(`https://pharmacy-location.up.railway.app/api/zones/${zoneId}`).then(() => {
                 setZones(zones.filter((zone) => zone.id !== zoneId));
             });
         }
@@ -53,7 +53,7 @@ const ZoneList = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/api/zones/save', selectedZone)
+        axios.post('https://pharmacy-location.up.railway.app/api/zones/save', selectedZone)
             .then((response) => {
                 setSelectedZone(null);
                 setModalIsOpen(false);

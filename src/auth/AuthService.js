@@ -2,7 +2,7 @@ import axios from "axios"
 import {setAuthToken} from "./auth";
 
 
-const API_URL = 'http://localhost:8080/api/auth';
+const API_URL = 'https://pharmacy-location.up.railway.app/api/auth';
 
 const AuthService = {
     login: async (email, password) => {

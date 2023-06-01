@@ -8,7 +8,7 @@ const ZoneByville = () => {
     const [selectedvilleId, setSelectedvilleId] = useState("");
 
     useEffect(() => {
-        axios.get("/api/villes/").then((response) => {
+        axios.get('https://pharmacy-location.up.railway.app/api/villes/').then((response) => {
             setCities(response.data);
         });
     }, []);
@@ -16,7 +16,7 @@ const ZoneByville = () => {
     const handlevilleChange = (event) => {
         const villeId = event.target.value;
         setSelectedvilleId(villeId);
-        axios.get(`/api/zones/ville/${villeId}`).then((response) => {
+        axios.get('https://pharmacy-location.up.railway.app/api/zones/ville/${villeId}').then((response) => {
             setZones(response.data);
         });
     };
