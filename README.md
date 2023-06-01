@@ -1,4 +1,11 @@
-Pharmacy Location is a web application developed and designed by Yousssef Elyourizi
+Pharmacy Location is a web application developed and designed by Yousssef Elyourizi ,it allows  users to easily find a pharmacy in their city or zone, and to filter pharmacies by on-call hours.
+
+<img width="953" alt="Screenshot 2023-06-01 194108" src="https://github.com/youssefelyou/pharmacy-location-front/assets/79792251/6935472a-752d-4a1d-9bb3-f318177a83a1">
+
+
+
+<img width="926" alt="Screenshot 2023-06-01 194200" src="https://github.com/youssefelyou/pharmacy-location-front/assets/79792251/16ccac7f-2ed0-4914-8985-931ae5e24c7f">
+
 
 ### `npm start`
 
